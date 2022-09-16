@@ -18,8 +18,7 @@ public class Student {
     private String name;
 
     @Autowired
-    @ManyToOne
-    @Column(nullable = false)
+    @OneToMany
     private List<Grade> grades;
 
     public Student() {

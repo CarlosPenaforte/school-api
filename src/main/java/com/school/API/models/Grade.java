@@ -14,17 +14,17 @@ public class Grade {
     private Long id;
 
     @Column(nullable = false)
-    private Double value;
+    private Double gradeValue;
 
     @Autowired
-    @ManyToOne
+    @OneToOne
     private Student student;
 
     public Grade() {
     }
 
-    public Grade(Long id, Double value, Student student) {
-        this.value = value;
+    public Grade(Long id, Double gradeValue, Student student) {
+        this.gradeValue = gradeValue;
         this.student = student;
     }
 
@@ -37,11 +37,11 @@ public class Grade {
     }
 
     public Double getGrade() {
-        return value;
+        return gradeValue;
     }
 
-    public void setGrade(Double value) {
-        this.value = value;
+    public void setGrade(Double gradeValue) {
+        this.gradeValue = gradeValue;
     }
 
     public Student getStudent() {
@@ -57,19 +57,19 @@ public class Grade {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Grade grade = (Grade) o;
-        return id.equals(grade.id) && value.equals(grade.value) && student.equals(grade.student);
+        return id.equals(grade.id) && gradeValue.equals(grade.gradeValue) && student.equals(grade.student);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, value, student);
+        return Objects.hash(id, gradeValue, student);
     }
 
     @Override
     public String toString() {
         return "Grades{" +
                 "id=" + id +
-                ", value=" + value +
+                ", gradeValue=" + gradeValue +
                 ", student=" + student +
                 '}';
     }
