@@ -38,11 +38,12 @@ public class StudentService {
         Optional<Student> newUser = studentRepository.findByName(name);
         if (newUser.isEmpty()) {
             for (Grade grade : student.getGrades()){
+                grade.setStudentName(student.getName());
                 gradeRepository.save(grade);
             }
             studentRepository.save(student);
         } else {
-            throw new StudentAlreadyRegisteredException(newUser.get().getId());
+            throw new StudentAlreadyRegisteredException(name);
         }
     }
 
@@ -50,9 +51,19 @@ public class StudentService {
         Optional<Student> userDb = studentRepository.findById(id);
         if (userDb.isPresent()) {
             student.setId(id);
+            List<Grade> gradesDb = userDb.get().getGrades();
 
             for (Grade grade : student.getGrades()){
-                gradeRepository.save(grade);
+                grade.setStudentName(student.getName());
+                if (!gradesDb.contains(grade)) {
+                    gradeRepository.save(grade);
+                } else {
+                    long gradeId = gradesDb.stream()
+                                    .filter(gradeDb -> {
+                                        return gradeDb.equals(grade);
+                                    }).findFirst().get().getId();
+                    grade.setId(gradeId);
+                }
             }
 
             studentRepository.save(student);
@@ -64,12 +75,12 @@ public class StudentService {
     public void delete(Long id) throws StudentNotFoundException {
         Optional<Student> userDb = studentRepository.findById(id);
         if (userDb.isPresent()) {
+            List<Grade> grades = userDb.get().getGrades();
+            studentRepository.deleteById(id);
 
-            for (Grade grade : userDb.get().getGrades()){
+            for (Grade grade : grades){
                 gradeRepository.delete(grade);
             }
-
-            studentRepository.deleteById(id);
         } else {
             throw new StudentNotFoundException(id);
         }

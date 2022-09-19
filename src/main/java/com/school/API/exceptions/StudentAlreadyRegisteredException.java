@@ -11,4 +11,8 @@ public class StudentAlreadyRegisteredException extends Exception {
     public StudentAlreadyRegisteredException(Long id) {
         super(String.format("Student with id %s is already registered in the system.", id));
     }
+
+    public StudentAlreadyRegisteredException(String name) {
+        super(String.format("Student with name %s is already registered in the system.", name));
+    }
 }

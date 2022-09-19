@@ -1,6 +1,5 @@
 package com.school.API.config;
 
-import com.school.API.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -19,19 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig  extends WebSecurityConfigurerAdapter {
 
-    @Value("${spring.security.debug:false}")
-    boolean securityDebug;
-
-    @Autowired
-    private UserService userService;
-
-    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userService).passwordEncoder(bCryptPasswordEncoder);
-    }
-
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors()
@@ -39,28 +25,9 @@ public class SecurityConfig  extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/students/*")
-                .hasAnyAuthority("USER", "ADMIN")
-                .antMatchers("/admin")
-                .hasAuthority("ADMIN")
-                .anyRequest().authenticated()
-                .and()
-                .httpBasic()
+                .anyRequest().permitAll()
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-    }
-
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
-
-    @Bean
-    protected WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.debug(securityDebug)
-                .ignoring()
-                .antMatchers("/css/**", "/js/**", "/img/**", "/lib/**", "/favicon.ico");
     }
 }

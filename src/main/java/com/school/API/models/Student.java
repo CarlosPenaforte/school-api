@@ -18,7 +18,7 @@ public class Student {
     private String name;
 
     @Autowired
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     private List<Grade> grades;
 
     public Student() {

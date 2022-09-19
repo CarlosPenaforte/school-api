@@ -18,14 +18,11 @@ public class GradeService {
     @Autowired
     private GradeRepository gradeRepository;
 
-    @Autowired
-    private StudentRepository studentRepository;
-
-    private List<Grade> findAll() {
+    public List<Grade> findAll() {
         return gradeRepository.findAll();
     }
 
-    private Grade findById(Long id) throws GradeNotFoundException {
+    public Grade findById(Long id) throws GradeNotFoundException {
         Optional<Grade> optGrade = gradeRepository.findById(id);
         if(optGrade.isPresent()){
             return optGrade.get();
@@ -34,13 +31,7 @@ public class GradeService {
         }
     }
 
-    private List<Grade> findAllByStudentId(Long id) throws StudentNotFoundException {
-        Optional<Student> optStudent = studentRepository.findById(id);
-
-        if (optStudent.isPresent()) {
-            return gradeRepository.findAllByStudent(optStudent.get());
-        } else {
-            throw new StudentNotFoundException(id);
-        }
+    public List<Grade> findAllBySubject(String subject) {
+        return gradeRepository.findAllBySubject(subject);
     }
 }
