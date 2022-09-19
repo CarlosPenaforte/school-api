@@ -1,6 +1,6 @@
 package com.school.API.data;
 
-import com.school.API.models.Admin;
+import com.school.API.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Optional;
 
-public class AdminDetailsData implements UserDetails {
+public class UserDetailsData implements UserDetails {
 
     @Autowired
-    private Optional<Admin> admin;
+    private Optional<User> user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -21,12 +21,12 @@ public class AdminDetailsData implements UserDetails {
 
     @Override
     public String getPassword() {
-        return admin.orElse(new Admin()).getPassword();
+        return user.orElse(new User()).getPassword();
     }
 
     @Override
     public String getUsername() {
-        return admin.orElse(new Admin()).getUsername();
+        return user.orElse(new User()).getUsername();
     }
 
     @Override
