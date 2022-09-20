@@ -36,6 +36,7 @@ public class StudentService {
     public void insert(Student student) throws StudentAlreadyRegisteredException {
         String name = student.getName();
         Optional<Student> newUser = studentRepository.findByName(name);
+
         if (newUser.isEmpty()) {
             for (Grade grade : student.getGrades()){
                 grade.setStudentName(student.getName());
